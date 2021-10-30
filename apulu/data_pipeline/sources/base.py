@@ -1,4 +1,4 @@
-class dataFetcher:
+class DataFetcher:
     def __init__(self, **configs):
         self.__dict__.update(configs)
 

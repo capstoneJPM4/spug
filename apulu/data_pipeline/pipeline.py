@@ -1,14 +1,14 @@
-from sources import twitterFetcher, newsFetcher, stockFetcher, secFetcher
+from sources import TwitterFetcher, NewsFetcher, StockFetcher, SecFetcher
 
 IMPLEMENTED_FETCHER = {
-    "twitter": twitterFetcher,
-    "news": newsFetcher,
-    "sec": secFetcher,
-    "stock": stockFetcher,
+    "twitter": TwitterFetcher,
+    "news": NewsFetcher,
+    "sec": SecFetcher,
+    "stock": StockFetcher,
     "etf": None,
 }
 
 
-class dataPipeline:
+class DataPipeline:
     def __init__(self, components):
         pass

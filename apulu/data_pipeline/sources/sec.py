@@ -1,7 +1,10 @@
-from .base import dataFetcher
+from sec_edgar_downloader import Downloader
+from .base import DataFetcher
+
+def 
 
 
-class secFetcher(dataFetcher):
+class SecFetcher(DataFetcher):
     def __init__(self, **configs):
         super().__init__(**configs)
 

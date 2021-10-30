@@ -4,7 +4,7 @@ fetch historical stocks prices
 from tqdm import tqdm
 import pandas as pd
 import pandas_datareader as pdr
-from .base import dataFetcher
+from .base import DataFetcher
 
 
 def get_stock_price(symbol, start, end):
@@ -23,7 +23,7 @@ def get_stock_price(symbol, start, end):
     )
 
 
-class stockFetcher(dataFetcher):
+class StockFetcher(DataFetcher):
     def __init__(self, **configs):
         super().__init__(**configs)
 

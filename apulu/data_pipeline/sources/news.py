@@ -1,7 +1,7 @@
-from .base import dataFetcher
+from .base import DataFetcher
 
 
-class newsFetcher(dataFetcher):
+class NewsFetcher(DataFetcher):
     def __init__(self, **configs):
         super().__init__(**configs)
 

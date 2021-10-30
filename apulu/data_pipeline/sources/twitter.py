@@ -6,7 +6,7 @@ import time
 from tqdm import tqdm
 import pandas as pd
 import snscrape.modules.twitter as sntwitter
-from .base import dataFetcher
+from .base import DataFetcher
 
 LANGUAGE = " lang:en"
 
@@ -79,7 +79,7 @@ def _process_tweets_df(tweet_list):
     return df
 
 
-class twitterFetcher(dataFetcher):
+class TwitterFetcher(DataFetcher):
     def __init__(self, **configs):
         super().__init__(**configs)
 
