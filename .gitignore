@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+data/
 build/
 develop-eggs/
 dist/
@@ -127,3 +128,14 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# vscode related
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Local History for Visual Studio Code
+.history/
