@@ -98,7 +98,7 @@ def _parse_10K(directory, ticker, items=[]):
     return result
 
 def _download_sec(tickers, directory, amount, items, external_fp):
-    """parse 10-K files for one company.
+    """batch download companies sec reports.
 
     Parameters
     ----------
@@ -145,6 +145,16 @@ class SecFetcher(DataFetcher):
         _download_sec(**self.sec_config["parser_config"])
 
     def get_data(self):
+        """return raw data after fetcher created as a dictionary.
+
+        dict format:
+        {company_name:
+            {year(e.g. "17","18"):
+                {"10K section":raw text}
+            }
+        }
+
+        """
         result = {}
         fp = self.sec_config["parser_config"]["directory"]
         for comp_fp in tqdm(os.listdir(os.path.join(fp,"parsed"))):
