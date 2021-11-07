@@ -3,8 +3,6 @@ import torch.nn.functional as F
 from torch.nn import Linear
 from torch_geometric.nn import TransformerConv, GCNConv
 
-torch.manual_seed(42)
-
 class GNN(torch.nn.Module):
     def __init__(self, dataset, feature_size):
         super(GNN, self).__init__()
