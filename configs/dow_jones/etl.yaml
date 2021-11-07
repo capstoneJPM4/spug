@@ -241,7 +241,7 @@ sec_config:
       - "1B"
       - "7A"
       - "8"
-    external_fp: ./data/external
+    external_fp: ./data/external/sec
   emb_config:
     input_dir: ./data/raw/sec/parsed
     output_dir: ./data/raw/sec/emb
