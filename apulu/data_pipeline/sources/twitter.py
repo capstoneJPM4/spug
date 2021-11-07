@@ -3,6 +3,7 @@ fetch twitter data
 """
 import itertools
 import time
+import datetime as dt
 from tqdm import tqdm
 import pandas as pd
 import snscrape.modules.twitter as sntwitter
@@ -75,15 +76,20 @@ def _process_tweets_df(tweet_list):
         columns=["datetime", "tweet_id", "text", "username", "ticker_symbol"],
     ).drop_duplicates()
     df.datetime = pd.to_datetime(df.datetime)
-    df = df.assign(date=df.datetime.dt.date, month=df.datetime.dt.month)
-    return df
+    df = df.assign(
+        date=df.datetime.dt.date,
+        month=df.datetime.dt.month,
+        year=df.datetime.dt.year,
+        quarter=df.datetime.apply(lambda x: f"{x.year}_q{x.quarter}"),
+    )
+    return df.dropna(subset=["quarter"])
 
 
 class TwitterFetcher(DataFetcher):
     def __init__(self, **configs):
         super().__init__(**configs)
 
-    def get_data(self, start, end):
+    def get_data(self):
         """get raw data from twitter API
         Args:
             symbol (list): ticker symbols of stocks
@@ -91,32 +97,44 @@ class TwitterFetcher(DataFetcher):
             end (datetime.datetime): end time
         """
         tweets = []
+        start_year = self.start_date.year
+        end_year = self.end_date.year
+        for year in range(start_year, end_year + 1):
+            print(f"downloading tweets for {year}")
+            if year == start_year:
+                start_date = self.start_date
+                end_date = dt.datetime(year + 1, 1, 1)
+            elif year == end_year:
+                start_date = dt.datetime(year, 1, 1)
+                end_date = self.end_date
+            else:
+                start_date = dt.datetime(year, 1, 1)
+                end_date = dt.datetime(year + 1, 1, 1)
+            for company in tqdm(self.companies):
+                # scraping tweets
+                symbol, alias = list(company.items())[0]
+                alias = alias["alias"]
+                time.sleep(self.twitter_conifg["sleep_time"])
+                processed_query = _preprocess_query(alias, start_date, end_date)
+                scraped_tweets = _call_twitter_api(processed_query)
 
-        for company in tqdm(self.companies):
-            # scraping tweets
-            symbol, alias = list(company.items())[0]
-            alias = alias["alias"]
-            time.sleep(self.twitter_conifg["sleep_time"])
-            processed_query = _preprocess_query(alias, start, end)
-            scraped_tweets = _call_twitter_api(processed_query)
-
-            sample = (
-                _sample_generator(scraped_tweets, 0, 100, 1)
-                + _sample_generator(scraped_tweets, 100, 500, 10)
-                + _sample_generator(scraped_tweets, 500, 1000, 100)
-            )
-            sample = list(
-                map(
-                    lambda tweet: [
-                        tweet.date,
-                        tweet.id,
-                        tweet.content,
-                        tweet.username,
-                        symbol,
-                    ],
-                    sample,
+                sample = (
+                    _sample_generator(scraped_tweets, 0, 100, 1)
+                    + _sample_generator(scraped_tweets, 100, 500, 10)
+                    + _sample_generator(scraped_tweets, 500, 1000, 100)
                 )
-            )
-            tweets.extend(sample)
+                sample = list(
+                    map(
+                        lambda tweet: [
+                            tweet.date,
+                            tweet.id,
+                            tweet.content,
+                            tweet.username,
+                            symbol,
+                        ],
+                        sample,
+                    )
+                )
+                tweets.extend(sample)
 
         return _process_tweets_df(tweets)

@@ -11,6 +11,7 @@ import pandas as pd
 import json
 from .base import DataFetcher
 
+
 def _parse_10K(directory, ticker, items=[]):
     """parse 10-K files for one company.
 
@@ -97,6 +98,7 @@ def _parse_10K(directory, ticker, items=[]):
         result[year] = curr_result
     return result
 
+
 def _download_sec(tickers, directory, amount, items, external_fp):
     """batch download companies sec reports.
 
@@ -129,13 +131,19 @@ def _download_sec(tickers, directory, amount, items, external_fp):
             with open(os.path.join(directory, "parsed", f"{ticker}.json"), "w+") as f:
                 json.dump(res, f)
         except:
-            if ticker+".json" in os.listdir(external_fp):
-                shutil.copy(os.path.join(external_fp,ticker+".json"),os.path.join(directory, "parsed"))
+            if ticker + ".json" in os.listdir(external_fp):
+                shutil.copy(
+                    os.path.join(external_fp, ticker + ".json"),
+                    os.path.join(directory, "parsed"),
+                )
             else:
                 errors.append(ticker)
             continue
-    print(f"{len(errors)} companies 10-Ks failed to be downloaded to the directory specified at etl.yaml sec_config section")
-    if len(errors) > 0: print(errors)
+    print(
+        f"{len(errors)} companies 10-Ks failed to be downloaded to the directory specified at etl.yaml sec_config section"
+    )
+    if len(errors) > 0:
+        print(errors)
     return
 
 
@@ -157,11 +165,11 @@ class SecFetcher(DataFetcher):
         """
         result = {}
         fp = self.sec_config["parser_config"]["directory"]
-        for comp_fp in tqdm(os.listdir(os.path.join(fp,"parsed"))):
+        for comp_fp in tqdm(os.listdir(os.path.join(fp, "parsed"))):
             comp = {}
             try:
-                comp = json.load(open(os.path.join(fp,"parsed",comp_fp)))
+                comp = json.load(open(os.path.join(fp, "parsed", comp_fp)))
             except:
-                comp = eval(open(os.path.join(fp,"parsed",comp_fp)).read())
+                comp = eval(open(os.path.join(fp, "parsed", comp_fp)).read())
             result[comp_fp.split(".")[0]] = comp
         return result

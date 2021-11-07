@@ -194,15 +194,13 @@ companies:
     - apple inc
     - apple inc
     - appleinc
-- dow:
-    alias:
-    - $dow
-    - dow
-    - dow inc.
-    - dow
 data_root: ./data
+start_date: 2016-10-01
+end_date: 2021-10-01
 twitter_conifg:
   sleep_time: 5
+etf_config:
+  external_path: ./data/external/etf
 sec_config:
   parser_config:
     tickers:
