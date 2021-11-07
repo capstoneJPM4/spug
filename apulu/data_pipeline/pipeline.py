@@ -122,7 +122,7 @@ class DataPipeline:
                 )
                 for option in ["price", "volume"]:
                     matrix_constructer = IMPLEMENTED_PREPROCESSOR[component](
-                        option, **self.configs 
+                        option, **self.configs
                     )
                     matrices = matrix_constructer.get_matrix(df)
                     for quarter, matrix in matrices.items():
@@ -152,6 +152,18 @@ class DataPipeline:
                             ),
                             matrix,
                         )
+            elif component == "sec":
+                df = json.load(
+                    open(
+                        os.path.join(
+                            self.configs["data_root"], "raw", component, "raw.csv"
+                        )
+                    )
+                )
+                matrix_constructer = IMPLEMENTED_PREPROCESSOR[component](
+                    option, **self.configs
+                )
+                matrix_constructer.get_matrix(df)
             else:
                 df = pd.read_csv(
                     os.path.join(self.configs["data_root"], "raw", component, "raw.csv")
