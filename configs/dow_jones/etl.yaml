@@ -205,35 +205,6 @@ sec_config:
   parser_config:
     tickers:
       - MMM
-      - AXP
-      - AMGN
-      - AAPL
-      - BA
-      - CAT
-      - CVX
-      - CSCO
-      - KO
-      - DOW
-      - GS
-      - HD
-      - HON
-      - IBM
-      - INTC
-      - JNJ
-      - JPM
-      - MCD
-      - MRK
-      - MSFT
-      - NKE
-      - PG
-      - CRM
-      - TRV
-      - UNH
-      - VZ
-      - V
-      - WBA
-      - WMT
-      - DIS
     directory: ./data/raw/sec
     amount: 5
     items:
