@@ -1,14 +1,14 @@
 """
 fetch SEC reports
 """
-from sec_edgar_downloader import Downloader
-from tqdm.auto import tqdm
 import os
 import shutil
 import re
 import bs4 as bs
+from tqdm.auto import tqdm
 import pandas as pd
 import json
+from sec_edgar_downloader import Downloader
 from .base import DataFetcher
 
 
@@ -150,7 +150,6 @@ def _download_sec(tickers, directory, amount, items, external_fp):
 class SecFetcher(DataFetcher):
     def __init__(self, **configs):
         super().__init__(**configs)
-        _download_sec(**self.sec_config["parser_config"])
 
     def get_data(self):
         """return raw data after fetcher created as a dictionary.
@@ -163,6 +162,7 @@ class SecFetcher(DataFetcher):
         }
 
         """
+        _download_sec(**self.sec_config["parser_config"])
         result = {}
         fp = self.sec_config["parser_config"]["directory"]
         for comp_fp in tqdm(os.listdir(os.path.join(fp, "parsed"))):

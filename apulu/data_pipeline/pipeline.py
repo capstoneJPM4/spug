@@ -2,6 +2,7 @@
 """
 import os
 import yaml
+import json
 import pandas as pd
 import numpy as np
 
@@ -80,17 +81,35 @@ class DataPipeline:
             print(f"working on downloading data for {component}")
             if component == "etf":
                 return
-            if redownload or not os.path.exists(
-                os.path.join(self.configs["data_root"], "raw", component, "raw.csv")
-            ):
-                fetcher = IMPLEMENTED_FETCHER[component](**self.configs)
-                df = fetcher.get_data()
-                df.to_csv(
+            elif component == "sec":
+                if redownload or not os.path.exists(
                     os.path.join(
-                        self.configs["data_root"], "raw", component, "raw.csv"
-                    ),
-                    index=False,
-                )
+                        self.configs["data_root"], "raw", component, "raw.json"
+                    )
+                ):
+                    fetcher = IMPLEMENTED_FETCHER[component](**self.configs)
+                    res = fetcher.get_data()
+                    with open(
+                        os.path.join(
+                            self.configs["data_root"], "raw", component, "raw.json"
+                        ),
+                        "w+",
+                    ) as fp:
+                        json.dump(res, fp)
+                return
+            else:
+                if redownload or not os.path.exists(
+                    os.path.join(self.configs["data_root"], "raw", component, "raw.csv")
+                ):
+                    fetcher = IMPLEMENTED_FETCHER[component](**self.configs)
+                    df = fetcher.get_data()
+                    df.to_csv(
+                        os.path.join(
+                            self.configs["data_root"], "raw", component, "raw.csv"
+                        ),
+                        index=False,
+                    )
+                return
         return
 
     def _preprocess(self):
@@ -103,7 +122,7 @@ class DataPipeline:
                 )
                 for option in ["price", "volume"]:
                     matrix_constructer = IMPLEMENTED_PREPROCESSOR[component](
-                        option, **self.configs
+                        option, **self.configs 
                     )
                     matrices = matrix_constructer.get_matrix(df)
                     for quarter, matrix in matrices.items():
