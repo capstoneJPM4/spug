@@ -214,7 +214,7 @@ sec_config:
       - "8"
     external_fp: ./data/external/sec
   emb_config:
-    input_dir: ./data/raw/sec/parsed
+    # input_dir: ./data/raw/sec/parsed
     # output_dir: ./data/raw/sec/emb
     top_k: 20
     model_name: all-mpnet-base-v2
@@ -222,7 +222,7 @@ news_config:
   sleep_time: 2
   nyt_key: MN3m4QX4XDbGsaBFDBpJG4waHymmqZ3O
   base_url: https://api.nytimes.com/svc/search/v2/articlesearch.json?
-  search_keyword: 
+  search_keyword:
       - 3M
       - American+Express
       - Amgen

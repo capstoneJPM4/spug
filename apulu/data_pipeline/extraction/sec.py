@@ -4,6 +4,7 @@ mainly used keyword extraction techniques and sentence embedding techniques
 """
 from .base import MatrixConstructor
 from tqdm import tqdm
+import shutil
 import numpy as np
 import json
 import os
@@ -50,4 +51,12 @@ class SecMatrixConstructor(MatrixConstructor):
         super().__init__(**configs)
 
     def get_matrix(self,df):
-        return _out_emb(df,self.sec_config["emb_config"]['top_k'],self.sec_config["emb_config"]['model_name'])
+        result = _out_emb(df,**self.sec_config["emb_config"])
+        print("removing middle part directories...")
+        fp = os.path.join(self.sec_config['parser_config']['directory'],"parsed")
+        print(f"removing {fp}")
+        shutil.rmtree(fp)
+        fp = os.path.join(self.sec_config['parser_config']['directory'],"sec-edgar-filings")
+        print(f"removing {fp}")
+        shutil.rmtree(fp)
+        return result
