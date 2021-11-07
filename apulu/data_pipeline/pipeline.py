@@ -156,12 +156,12 @@ class DataPipeline:
                 df = json.load(
                     open(
                         os.path.join(
-                            self.configs["data_root"], "raw", component, "raw.csv"
+                            self.configs["data_root"], "raw", component, "raw.json"
                         )
                     )
                 )
                 matrix_constructer = IMPLEMENTED_PREPROCESSOR[component](
-                    option, **self.configs
+                     **self.configs
                 )
                 matrices = matrix_constructer.get_matrix(df)
                 for company, matrix in matrices.items():
