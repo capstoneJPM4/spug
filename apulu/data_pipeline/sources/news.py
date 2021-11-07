@@ -94,9 +94,9 @@ class NewsFetcher(DataFetcher):
         df_article["texts"] = txts
         df_article["Date"] = pd.to_datetime(df_article["Date"])
         df_article = df_article.assign(
-          date = df_article.Date.dt.date
-          month = df_article.Date.dt.month
-          year = df_article.Date.dt.year
+          #date = df_article.Date.dt.date,
+          month = df_article.Date.dt.month,
+          year = df_article.Date.dt.year,
           quarter = df_article.Date.apply(lambda x: f"{x.year}_q{x.quarter}"),
         }
         return df_article
