@@ -247,3 +247,38 @@ sec_config:
     # output_dir: ./data/raw/sec/emb
     top_k: 20
     model_name: all-mpnet-base-v2
+news_config:
+  sleep_time: 2
+  nyt_key: MN3m4QX4XDbGsaBFDBpJG4waHymmqZ3O
+  base_url: https://api.nytimes.com/svc/search/v2/articlesearch.json?
+  search_keyword: 
+      - 3M
+      - American+Express
+      - Amgen
+      - Apple
+      - Boeing
+      - Caterpillar
+      - Chevron
+      - Cisco
+      - Coca+Cola
+      - Dow
+      - Goldman+Sachs
+      - Home+Depot
+      - Honeywell
+      - IBM
+      - Intel
+      - Johnson+Johnson
+      - JPMorgan
+      - McDonald
+      - Merck
+      - Microsoft
+      - Nike
+      - Procter+Gamble
+      - Salesforce
+      - Travelers
+      - UnitedHealth
+      - Verizon
+      - Visa
+      - Walgreens
+      - Walmart
+      - Disney
