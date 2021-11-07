@@ -163,7 +163,17 @@ class DataPipeline:
                 matrix_constructer = IMPLEMENTED_PREPROCESSOR[component](
                     option, **self.configs
                 )
-                matrix_constructer.get_matrix(df)
+                matrices = matrix_constructer.get_matrix(df)
+                for company, matrix in matrices.items():
+                    np.save(
+                        os.path.join(
+                            self.configs["data_root"],
+                            "raw",
+                            component,
+                            f"{company}.npy",
+                        ),
+                        matrix,
+                    )
             else:
                 df = pd.read_csv(
                     os.path.join(self.configs["data_root"], "raw", component, "raw.csv")

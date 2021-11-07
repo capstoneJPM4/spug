@@ -11,6 +11,7 @@ class DataFetcher:
         self.companies = []
         self.twitter_conifg = {}
         self.sec_config = {}
+        self.news_config = {}
         self.__dict__.update(configs)
         self.companies.sort(key=lambda x: list(x.keys())[0])
 

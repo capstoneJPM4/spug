@@ -195,7 +195,7 @@ companies:
     - apple inc
     - appleinc
 data_root: ./data
-start_date: 2016-10-01
+start_date: 2021-07-01
 end_date: 2021-10-01
 twitter_conifg:
   sleep_time: 5
