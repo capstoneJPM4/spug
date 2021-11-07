@@ -67,10 +67,11 @@ class EtfMatrixConstructor(MatrixConstructor):
             data = pd.read_csv(file)
             etf_lst = data.Filer.str.lower().tolist()
             etf_share_holding = data["Shares Held"]
-            i = symbols[symbol]
-            for etf, share_holding in zip(etf_lst, etf_share_holding):
-                j = etfs[etf]
-                matrix[i, j] += share_holding
+            i = symbols.get(symbol, None)
+            if i is not None:
+                for etf, share_holding in zip(etf_lst, etf_share_holding):
+                    j = etfs[etf]
+                    matrix[i, j] += share_holding
         return matrix / num_quarters
 
     def _get_etf_set(self, files):

@@ -80,7 +80,7 @@ class DataPipeline:
         for component in self.components:
             print(f"working on downloading data for {component}")
             if component == "etf":
-                return
+                continue
             elif component == "sec":
                 if redownload or not os.path.exists(
                     os.path.join(
@@ -96,7 +96,6 @@ class DataPipeline:
                         "w+",
                     ) as fp:
                         json.dump(res, fp)
-                return
             else:
                 if redownload or not os.path.exists(
                     os.path.join(self.configs["data_root"], "raw", component, "raw.csv")
@@ -109,7 +108,6 @@ class DataPipeline:
                         ),
                         index=False,
                     )
-                return
         return
 
     def _preprocess(self):
@@ -160,9 +158,7 @@ class DataPipeline:
                         )
                     )
                 )
-                matrix_constructer = IMPLEMENTED_PREPROCESSOR[component](
-                     **self.configs
-                )
+                matrix_constructer = IMPLEMENTED_PREPROCESSOR[component](**self.configs)
                 matrices = matrix_constructer.get_matrix(df)
                 for company, matrix in matrices.items():
                     np.save(
