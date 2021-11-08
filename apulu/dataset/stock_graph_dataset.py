@@ -9,8 +9,6 @@ from torch_geometric.utils import dense_to_sparse
 
 
 class StockGraphDataset(InMemoryDataset):
-    datasets = set(["news", "twitter", "etf"])
-
     def __init__(
         self,
         root: str,
@@ -26,7 +24,6 @@ class StockGraphDataset(InMemoryDataset):
         self.data = os.path.join(root, "raw", self.name, path)
         self.stock_path = os.path.join(root, "raw", stock_path)
         self.path = path.split(".")[0]
-        assert self.name in self.datasets
         super().__init__(root, transform, pre_transform)
         self.data, self.slices = torch.load(self.processed_paths[0])
 
@@ -55,7 +52,7 @@ class StockGraphDataset(InMemoryDataset):
         torch.save(self.collate([data]), self.processed_paths[0])
 
     def _process_stock(self):
-        _, _, year, quarter = self.path.split("_")
+        year, quarter = self.path.split("_")[-2:]
         year, quarter = int(year), int(quarter[1])
         df = pd.read_csv(
             self.stock_path,

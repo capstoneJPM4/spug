@@ -5,7 +5,7 @@ import os
 import shutil
 import re
 import bs4 as bs
-from tqdm.auto import tqdm
+from tqdm import tqdm
 import pandas as pd
 import json
 from sec_edgar_downloader import Downloader
@@ -162,7 +162,9 @@ class SecFetcher(DataFetcher):
         }
 
         """
-        _download_sec(**self.sec_config["parser_config"])
+        params = self.sec_config["parser_config"]
+        params["tickers"] = [list(com.keys())[0].upper() for com in self.companies]
+        _download_sec(**params)
         result = {}
         fp = self.sec_config["parser_config"]["directory"]
         for comp_fp in tqdm(os.listdir(os.path.join(fp, "parsed"))):
@@ -172,4 +174,6 @@ class SecFetcher(DataFetcher):
             except:
                 comp = eval(open(os.path.join(fp, "parsed", comp_fp)).read())
             result[comp_fp.split(".")[0]] = comp
+        shutil.rmtree(os.path.join(fp, "parsed"))
+        shutil.rmtree(os.path.join(fp, "sec-edgar-filings"))
         return result

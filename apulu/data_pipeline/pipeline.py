@@ -124,12 +124,28 @@ class DataPipeline:
                     )
                     matrices = matrix_constructer.get_matrix(df)
                     for quarter, matrix in matrices.items():
+                        os.makedirs(
+                            os.path.join(
+                                self.configs["data_root"], "raw", component, option
+                            ),
+                            exist_ok=True,
+                        )
+                        os.makedirs(
+                            os.path.join(
+                                self.configs["data_root"],
+                                "processed",
+                                component,
+                                option,
+                            ),
+                            exist_ok=True,
+                        )
                         np.save(
                             os.path.join(
                                 self.configs["data_root"],
                                 "raw",
                                 component,
-                                f"{option}_{quarter}.npy",
+                                option,
+                                f"{quarter}.npy",
                             ),
                             matrix,
                         )
@@ -141,12 +157,28 @@ class DataPipeline:
                     )
                     matrices = matrix_constructer.get_matrix(df)
                     for quarter, matrix in matrices.items():
+                        os.makedirs(
+                            os.path.join(
+                                self.configs["data_root"], "raw", component, option
+                            ),
+                            exist_ok=True,
+                        )
+                        os.makedirs(
+                            os.path.join(
+                                self.configs["data_root"],
+                                "processed",
+                                component,
+                                option,
+                            ),
+                            exist_ok=True,
+                        )
                         np.save(
                             os.path.join(
                                 self.configs["data_root"],
                                 "raw",
                                 component,
-                                f"{option}_{quarter}.npy",
+                                option,
+                                f"{quarter}.npy",
                             ),
                             matrix,
                         )
