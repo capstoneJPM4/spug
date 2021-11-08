@@ -35,7 +35,7 @@ our project is used sequentially with `data pipeline`, `datasets`, `modeling`, .
 to run the entire project once, you may run following commands:
 
 ```bash
-python projecn.py --config_path <your configuration file>
+python project.py --config_path <your configuration file>
 ```
 
 ### Data Pipeline
