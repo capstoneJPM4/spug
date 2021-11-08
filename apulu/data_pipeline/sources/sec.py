@@ -174,6 +174,4 @@ class SecFetcher(DataFetcher):
             except:
                 comp = eval(open(os.path.join(fp, "parsed", comp_fp)).read())
             result[comp_fp.split(".")[0]] = comp
-        shutil.rmtree(os.path.join(fp, "parsed"))
-        shutil.rmtree(os.path.join(fp, "sec-edgar-filings"))
         return result
