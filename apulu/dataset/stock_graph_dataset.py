@@ -63,6 +63,7 @@ class StockGraphDataset(InMemoryDataset):
         X = curr.pivot_table(
             index="Date", columns="ticker_symbol", values="Close"
         ).values.T
+        X_tensor = torch.tensor(X)
         if quarter < 4:
             next_year, next_quarter = year, quarter + 1
         else:
@@ -72,4 +73,5 @@ class StockGraphDataset(InMemoryDataset):
             index="Date", columns="ticker_symbol", values="Close"
         ).values.T
         y = (y.mean(1) - X.mean(1)) / X.mean(1)
-        return X, y
+        y_tensor = torch.tensor(y)
+        return X_tensor, y_tensor
