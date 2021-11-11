@@ -55,8 +55,10 @@ class SecMatrixConstructor(MatrixConstructor):
         print("removing middle part directories...")
         fp = os.path.join(self.sec_config['parser_config']['directory'],"parsed")
         print(f"removing {fp}")
-        shutil.rmtree(fp)
+        if os.path.exists(fp):
+            shutil.rmtree(fp)
         fp = os.path.join(self.sec_config['parser_config']['directory'],"sec-edgar-filings")
         print(f"removing {fp}")
-        shutil.rmtree(fp)
+        if os.path.exists(fp):
+            shutil.rmtree(fp)
         return result
