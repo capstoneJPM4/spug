@@ -9,6 +9,10 @@ __pycache__/
 # Distribution / packaging
 .Python
 data/external/etf/*
+<<<<<<< HEAD
+data/raw
+=======
+>>>>>>> parent of a374ef8 (change data pipeline)
 build/
 develop-eggs/
 dist/

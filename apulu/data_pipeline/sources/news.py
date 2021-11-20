@@ -78,11 +78,11 @@ class NewsFetcher(DataFetcher):
                 res = _article_search(
                     c,
                     day.strftime("%Y%m%d"),
-                    (day + datetime.timedelta(30)).strftime("%Y%m%d"),
+                    (day + datetime.timedelta(7)).strftime("%Y%m%d"),
                     self.news_config["base_url"],
                     self.news_config["nyt_key"],
                 )
-                day += datetime.timedelta(31)
+                day += datetime.timedelta(7)
                 num += 1
                 if "response" not in res:
                     continue
@@ -105,7 +105,7 @@ class NewsFetcher(DataFetcher):
         df_article["Date"] = pd.to_datetime(df_article["Date"])
         df_article = df_article.assign(
             # date = df_article.Date.dt.date,
-            month=df_article.Date.dt.month,
+            month=df_article.Date.apply(lambda x: f"{x.year}_{x.month}"),
             year=df_article.Date.dt.year,
             quarter=df_article.Date.apply(lambda x: f"{x.year}_q{x.quarter}"),
         )

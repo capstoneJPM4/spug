@@ -15,12 +15,12 @@ class StockMatrixConstructor(MatrixConstructor):
         self.option = option
 
     def get_matrix(self, df):
-        quarters = df.quarter.unique()
+        months = df.month.unique()
         df["Date"] = pd.to_datetime(df["Date"])
         companies = [list(com.keys())[0] for com in self.companies]
         res = {
-            quarter: pd.DataFrame(0, index=companies, columns=companies)
-            for quarter in quarters
+            month: pd.DataFrame(0, index=companies, columns=companies)
+            for month in months
         }
         if self.option == "price":
             agg_val = "Close"
@@ -30,11 +30,11 @@ class StockMatrixConstructor(MatrixConstructor):
             raise NotImplementedError(
                 f"please specify option in {self.implemented_options}"
             )
-        for quarter in tqdm(quarters):
-            quarter_df = df[df.quarter == quarter]
-            res[quarter] = quarter_df.pivot_table(
+        for month in tqdm(months):
+            quarter_df = df[df.month == month]
+            res[month] = quarter_df.pivot_table(
                 index="Date", columns="ticker_symbol", values=agg_val
             ).corr()
-        for quarter, mat in res.items():
-            res[quarter] = mat.values
+        for month, mat in res.items():
+            res[month] = mat.values
         return res
