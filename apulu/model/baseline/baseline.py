@@ -6,6 +6,8 @@ import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 
+from sklearn.metrics import classification_report
+
 class baseline(object):
         
     def __init__(self, df, companies, time_range):
@@ -44,8 +46,8 @@ class baseline(object):
         self.companies = companies
         self.time_range = time_range
         
-        self.train_df = df[df.Year < 2020].copy()
-        self.val_df = df[df.Year >= 2020].copy()
+        self.train_df = df[df.Date < "2020-10-01"].copy()
+        self.val_df = df[df.Date >= "2020-10-01"].copy()
 
         self.train_X, self.train_y = self._split_data(self.train_df, companies, time_range)
         self.val_X, self.val_y = self._split_data(self.val_df, companies, time_range)
@@ -105,6 +107,23 @@ class baseline(object):
                     epoch, "Training Loss:", loss_val/len(val_loader),
                     "Validation Loss:", loss_train/len(train_loader)
                 )
+    
+    def _val_loop(self, model, val_loader, device):
+        
+        preds = []
+        trues = []
+        
+        for x, y in val_loader:
+            out = model(x.to(device=device)).detach().numpy().reshape(len(self.companies),)
+            out = (out > 0.5).astype(int).tolist()
+            y = y.detach().numpy().reshape(len(self.companies),).tolist()
+            preds += out
+            trues += y
+        
+        return classification_report(trues, preds)
                 
     def train(self):
         self._training_loop(self.EPOCH, self.OPTIM, self.model, self.LOSS, self.train_dl, self.val_dl, self.DEVICE)
+        
+    def validate(self):
+        return self._val_loop(self.model, self.val_dl, self.DEVICE)
