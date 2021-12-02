@@ -5,3 +5,4 @@ pip install torch==$TORCH_VERSION -f https://download.pytorch.org/whl/$CUDA/torc
 pip install torch-scatter -f https://data.pyg.org/whl/torch-$TORCH_VERSION+$CUDA.html &&
 pip install torch-sparse -f https://data.pyg.org/whl/torch-$TORCH_VERSION+$CUDA.html &&
 pip install torch-geometric
+pip install torch-geometric-temporal

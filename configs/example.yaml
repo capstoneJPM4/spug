@@ -12,7 +12,7 @@ companies:
     - v
     - visa inc class a
     - visa
-data_root: ./data
+data_root: ../data
 start_date: 2021-07-01
 end_date: 2021-10-01
 data_pipeline_config:
@@ -26,10 +26,10 @@ data_pipeline_config:
 twitter_conifg:
     sleep_time: 5
 etf_config:
-    external_path: ./data/external/etf
+    external_path: ../data/external/etf
 sec_config:
     parser_config:
-        directory: ./data/raw/sec
+        directory: ../data/raw/sec
         amount: 5
         items:
         - "1A"

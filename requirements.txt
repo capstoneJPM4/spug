@@ -9,3 +9,5 @@ sec_edgar_downloader==4.2.2
 pandas_datareader==0.10.0
 snscrape==0.3.4
 jupyterlab
+matplotlib
+ipywidgets
