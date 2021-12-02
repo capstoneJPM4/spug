@@ -220,8 +220,6 @@ sec_config:
         - "8"
         external_fp: ./data/external/sec
     emb_config:
-        # input_dir: ./data/raw/sec/parsed
-        # output_dir: ./data/raw/sec/emb
         top_k: 20
         model_name: all-mpnet-base-v2
 news_config:
