@@ -197,14 +197,6 @@ companies:
 data_root: ../data
 start_date: 2016-10-01
 end_date: 2021-10-01
-data_pipeline_config:
-    components:
-    - stock
-    - sec
-    - twitter
-    - news
-    - etf
-    redownload: false
 twitter_conifg:
     sleep_time: 5
 etf_config:
