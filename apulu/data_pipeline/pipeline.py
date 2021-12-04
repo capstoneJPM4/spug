@@ -29,10 +29,7 @@ IMPLEMENTED_PREPROCESSOR = {
     "stock": StockMatrixConstructor,
     "etf": EtfMatrixConstructor,
 }
-FILE_TREE = [
-    ["raw", list(IMPLEMENTED_FETCHER.keys())],
-    ["processed", list(IMPLEMENTED_FETCHER.keys())],
-]
+FILE_TREE = [["raw", list(IMPLEMENTED_FETCHER.keys())]]
 
 
 class DataPipeline:
@@ -116,39 +113,34 @@ class DataPipeline:
             print(f"working on constructing matrices for {component}")
             if component == "stock":
                 df = pd.read_csv(
-                    os.path.join(self.configs["data_root"], "raw", component, "raw.csv")
+                    os.path.join(
+                        self.configs["data_root"], "raw", component, "raw.csv"
+                    ),
+                    parse_dates=["date"],
                 )
-                for option in ["price", "volume"]:
-                    matrix_constructer = IMPLEMENTED_PREPROCESSOR[component](
-                        option, **self.configs
-                    )
-                    matrices = matrix_constructer.get_matrix(df)
-                    for quarter, matrix in matrices.items():
-                        os.makedirs(
-                            os.path.join(
-                                self.configs["data_root"], "raw", component, option
-                            ),
-                            exist_ok=True,
+                for interval in ["month", "quarter"]:
+                    for option in ["price", "volume"]:
+                        matrix_constructer = IMPLEMENTED_PREPROCESSOR[component](
+                            option, **self.configs
                         )
-                        os.makedirs(
-                            os.path.join(
-                                self.configs["data_root"],
-                                "processed",
-                                component,
-                                option,
-                            ),
-                            exist_ok=True,
-                        )
-                        np.save(
-                            os.path.join(
-                                self.configs["data_root"],
-                                "raw",
-                                component,
-                                option,
-                                f"{quarter}.npy",
-                            ),
-                            matrix,
-                        )
+                        matrices = matrix_constructer.get_matrix(df, interval)
+                        for T, matrix in matrices.items():
+                            os.makedirs(
+                                os.path.join(
+                                    self.configs["data_root"], "raw", component, option
+                                ),
+                                exist_ok=True,
+                            )
+                            np.save(
+                                os.path.join(
+                                    self.configs["data_root"],
+                                    "raw",
+                                    component,
+                                    option,
+                                    f"{T}.npy",
+                                ),
+                                matrix,
+                            )
             elif component == "etf":
                 df = None
                 for option in ["bipartite", "occurence"]:
@@ -160,15 +152,6 @@ class DataPipeline:
                         os.makedirs(
                             os.path.join(
                                 self.configs["data_root"], "raw", component, option
-                            ),
-                            exist_ok=True,
-                        )
-                        os.makedirs(
-                            os.path.join(
-                                self.configs["data_root"],
-                                "processed",
-                                component,
-                                option,
                             ),
                             exist_ok=True,
                         )
@@ -203,21 +186,27 @@ class DataPipeline:
                         matrix,
                     )
             else:
-                df = pd.read_csv(
-                    os.path.join(self.configs["data_root"], "raw", component, "raw.csv")
-                )
-                matrix_constructer = IMPLEMENTED_PREPROCESSOR[component](**self.configs)
-                matrices = matrix_constructer.get_matrix(df)
-                for quarter, matrix in matrices.items():
-                    np.save(
+                for interval in ["month", "quarter"]:
+                    df = pd.read_csv(
                         os.path.join(
-                            self.configs["data_root"],
-                            "raw",
-                            component,
-                            f"{quarter}.npy",
+                            self.configs["data_root"], "raw", component, "raw.csv"
                         ),
-                        matrix,
+                        parse_dates=["date"],
                     )
+                    matrix_constructer = IMPLEMENTED_PREPROCESSOR[component](
+                        **self.configs
+                    )
+                    matrices = matrix_constructer.get_matrix(df, interval)
+                    for t, matrix in matrices.items():
+                        np.save(
+                            os.path.join(
+                                self.configs["data_root"],
+                                "raw",
+                                component,
+                                f"{t}.npy",
+                            ),
+                            matrix,
+                        )
         return
 
     def _create_file_tree(self):

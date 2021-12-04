@@ -2,6 +2,7 @@
 """
 from tqdm import tqdm
 import pandas as pd
+import numpy as np
 from .base import MatrixConstructor
 
 
@@ -14,13 +15,21 @@ class StockMatrixConstructor(MatrixConstructor):
         super().__init__(**configs)
         self.option = option
 
-    def get_matrix(self, df):
-        quarters = df.quarter.unique()
-        df["Date"] = pd.to_datetime(df["Date"])
+    def get_matrix(self, df, interval):
+        if interval == "month":
+            df = df.assign(
+                interval=df.date.apply(lambda x: f"{x.year}_{str(x.month).zfill(2)}")
+            )
+        elif interval == "quarter":
+            df = df.assign(interval=df.date.apply(lambda x: f"{x.year}_q{x.quarter}"))
+        else:
+            raise NotImplementedError
+
+        time_intervals = sorted(df.interval.unique())
         companies = [list(com.keys())[0] for com in self.companies]
         res = {
-            quarter: pd.DataFrame(0, index=companies, columns=companies)
-            for quarter in quarters
+            interval: pd.DataFrame(0, index=companies, columns=companies)
+            for interval in time_intervals
         }
         if self.option == "price":
             agg_val = "Close"
@@ -30,11 +39,12 @@ class StockMatrixConstructor(MatrixConstructor):
             raise NotImplementedError(
                 f"please specify option in {self.implemented_options}"
             )
-        for quarter in tqdm(quarters):
-            quarter_df = df[df.quarter == quarter]
-            res[quarter] = quarter_df.pivot_table(
-                index="Date", columns="ticker_symbol", values=agg_val
+        for T in tqdm(time_intervals):
+            quarter_df = df[df.interval == T]
+            res[T] = quarter_df.pivot_table(
+                index="date", columns="ticker_symbol", values=agg_val
             ).corr()
-        for quarter, mat in res.items():
-            res[quarter] = mat.values
-        return res
+        to_return = {}
+        for T, mat in res.items():
+            to_return[T] = np.square(mat.values)
+        return to_return

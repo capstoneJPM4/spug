@@ -21,14 +21,8 @@ def get_stock_price(symbol, start, end):
         .read()
         .reset_index()[["Date", "High", "Low", "Open", "Close", "Volume", "Adj Close"]]
     )
-    df["datetime"] = pd.to_datetime(df.Date)
-    df = df.assign(
-        date=df.datetime.dt.date,
-        month=df.datetime.apply(lambda x: f"{x.year}_{x.month}"),
-        year=df.datetime.dt.year,
-        quarter=df.datetime.apply(lambda x: f"{x.year}_q{x.quarter}"),
-    )
-    return df.drop("datetime", axis=1)
+    df["date"] = pd.to_datetime(df.Date)
+    return df.drop("Date", axis=1)
 
 
 class StockFetcher(DataFetcher):

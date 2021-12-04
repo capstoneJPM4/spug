@@ -69,12 +69,8 @@ def _process_tweets_df(tweet_list):
     ).drop_duplicates()
     df.datetime = pd.to_datetime(df.datetime)
     df = df.assign(
-        date=df.datetime.dt.date,
-        month=df.datetime.apply(lambda x: f"{x.year}_{x.month}"),
-        year=df.datetime.dt.year,
-        quarter=df.datetime.apply(lambda x: f"{x.year}_q{x.quarter}"),
-    )
-    return df.dropna(subset=["quarter"])
+        date=df.datetime.dt.date)
+    return df.drop('datetime', axis = 1)
 
 
 class TwitterFetcher(DataFetcher):
