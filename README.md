@@ -21,7 +21,7 @@ Install the dependencies by
 
 ```bash
 conda activate apulu
-pip install -e .
+./env.sh
 ```
 
 ## Project Configuration
@@ -32,16 +32,4 @@ The project is driven by configuration file: a yaml file specified every paramet
 
 our project is used sequentially with `data pipeline`, `datasets`, `modeling`, ...
 
-to run the entire project once, you may run following commands:
-
-```bash
-python project.py --config_path <your configuration file>
-```
-
-### Data Pipeline
-
-To run data pipeline itself, you may run following commands:
-
-```bash
-python data_pipeline.py --config_path <your configuration file>
-```
+to run the entire project once, you may run following the steps in the `notebooks`:
