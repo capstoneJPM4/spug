@@ -69,9 +69,10 @@ class Trainer:
         return loss.item()
 
     def _val_step(self, model, data):
-        logits, target = self._shared_step(model, data)
-        loss = self.criterion(logits, target)
-        return loss.item()
+        with torch.no_grad():
+            logits, target = self._shared_step(model, data)
+            loss = self.criterion(logits, target)
+            return loss.item()
 
     def _shared_step(self, model, data):
         data.x = data.x.to(self.device)
