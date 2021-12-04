@@ -6,7 +6,6 @@ Apulu is a project inspired by the project [Apollo](https://github.com/jnrkufuor
   - [Getting Started](#getting-started)
   - [Project Configuration](#project-configuration)
   - [Usage](#usage)
-    - [Data Pipeline](#data-pipeline)
 
 
 ## Getting Started
