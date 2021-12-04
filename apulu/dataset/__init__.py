@@ -1,1 +1,1 @@
-from .stock_graph_dataset import StockGraphDataset
+from .dataset_generator import DatasetGenerator

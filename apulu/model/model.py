@@ -1,31 +1,37 @@
 import torch
-import torch.nn.functional as F 
-from torch.nn import Linear
-from torch_geometric.nn import TransformerConv, GCNConv
+from torch_geometric_temporal import GConvGRU
+from torch_geometric.nn import GCNConv
 
-class GNN(torch.nn.Module):
-    def __init__(self, dataset, feature_size):
-        super(GNN, self).__init__()
-        torch.manual_seed(10)
 
-        input_size = dataset.num_features
-        output_size = dataset.num_classes
-        self.conv1 = GCNConv(in_channels=input_size, out_channels=feature_size)
-        self.conv2 = GCNConv(in_channels=feature_size, out_channels=feature_size)
-        self.d1 = torch.nn.Linear(feature_size, output_size)
+class GCN(torch.nn.Module):
+    def __init__(self, input_size, hidden_dims, dropout=0.3):
+        super(GCN, self).__init__()
+        self.conv = GCNConv(in_channels=input_size, out_channels=hidden_dims)
+        self.linear = torch.nn.Linear(in_features=hidden_dims, out_features=2)
+        self.dropout = torch.nn.Dropout(dropout)
 
-    def forward(self, x, edge_index):
-        # First Message Passing Layer
-        x = self.conv1(x, edge_index)
-        x = x.relu()
-        x = F.dropout(x, p=0.2, training=self.training)
+    def forward(self, data):
+        x, edge_index, edge_weight = data.x, data.edge_index, data.edge_attr
+        h = self.conv(x=x, edge_index=edge_index, edge_weight=edge_weight)
+        h = self.dropout(h)
+        h = torch.relu(h)
+        h = self.linear(h)
+        h = torch.sigmoid(h)
+        return h
 
-        # Second Message Passing Layer
-        x = self.conv2(x, edge_index)
-        x = x.relu()
-        x = F.dropout(x, p=0.2, training=self.training)
 
-        # Output layer 
-        x = F.softmax(self.out(x), dim=1)
-        return x
+class RecurrentGCN(torch.nn.Module):
+    def __init__(self, input_size, hidden_dims, dropout=0.3):
+        super(RecurrentGCN, self).__init__()
+        self.conv_gru = GConvGRU(input_size, hidden_dims, 3)
+        self.linear = torch.nn.Linear(hidden_dims, 2)
+        self.dropout = torch.nn.Dropout(dropout)
 
+    def forward(self, data):
+        x, edge_index, edge_weight = data.x, data.edge_index, data.edge_attr
+        h = self.conv_gru(x, edge_index, edge_weight)
+        h = self.dropout(h)
+        h = torch.tanh(h)
+        h = self.linear(h)
+        h = torch.sigmoid(h)
+        return h

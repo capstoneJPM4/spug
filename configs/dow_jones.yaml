@@ -194,24 +194,16 @@ companies:
     - apple inc
     - apple inc
     - appleinc
-data_root: ./data
+data_root: ../data
 start_date: 2016-10-01
 end_date: 2021-10-01
-data_pipeline_config:
-    components:
-    # - stock
-    - sec
-    # - twitter
-    # - news
-    # - etf
-    redownload: false
 twitter_conifg:
     sleep_time: 5
 etf_config:
-    external_path: ./data/external/etf
+    external_path: ../data/external/etf
 sec_config:
     parser_config:
-        directory: ./data/raw/sec
+        directory: ../data/raw/sec
         amount: 5
         items:
         - "1A"
@@ -220,8 +212,6 @@ sec_config:
         - "8"
         external_fp: ./data/external/sec
     emb_config:
-        # input_dir: ./data/raw/sec/parsed
-        # output_dir: ./data/raw/sec/emb
         top_k: 20
         model_name: all-mpnet-base-v2
 news_config:

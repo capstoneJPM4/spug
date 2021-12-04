@@ -14,15 +14,12 @@ from .base import DataFetcher
 
 def _parse_10K(directory, ticker, items=[]):
     """parse 10-K files for one company.
-
     Parameters
     ----------
     directory : str
         current working directory where file is downloaded to.
-
     ticker : str
         company ticker.
-
     items : list[str]
         sections in 10K that need to be parsed. e.g. ["1A","1B","7A","7","8","9"]
         blank will appear if regex does not capture anything.
@@ -101,18 +98,14 @@ def _parse_10K(directory, ticker, items=[]):
 
 def _download_sec(tickers, directory, amount, items, external_fp):
     """batch download companies sec reports.
-
     Parameters
     ----------
     tickers : list[str]
         company tickers.
-
     directory : str
         current working directory where file is downloaded to.
-
     amount : int
         the most recent amount of years of sec report.
-
     items : list[str]
         sections in 10K that need to be parsed. e.g. ["1A","1B","7A","7","8","9"]
         blank will appear if regex does not capture anything.
@@ -153,14 +146,12 @@ class SecFetcher(DataFetcher):
 
     def get_data(self):
         """return raw data after fetcher created as a dictionary.
-
         dict format:
         {company_name:
             {year(e.g. "17","18"):
                 {"10K section":raw text}
             }
         }
-
         """
         params = self.sec_config["parser_config"]
         params["tickers"] = [list(com.keys())[0].upper() for com in self.companies]

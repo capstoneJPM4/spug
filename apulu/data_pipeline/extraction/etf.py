@@ -46,7 +46,7 @@ class EtfMatrixConstructor(MatrixConstructor):
             raise NotImplementedError(
                 f"please specify option in {self.implemented_options}"
             )
-        return {"****_**": mat}
+        return {"raw": mat}
 
     def _generate_bipartite(self, files, companies, num_quarters):
         """generate stock ticker - etf bipartite graph
