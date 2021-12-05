@@ -1,8 +1,8 @@
-# Apulu
+# SPUG - stock prediction using graph
 
-Apulu is a project inspired by the project [Apollo](https://github.com/jnrkufuor/apollo). This project implements data pipeline, data cleaning, graph construction, and modeling with Graph Neural Network.
+SPUG implements data pipeline, data cleaning, graph construction, and modeling with Graph Neural Network.
 
-- [Apulu](#apulu)
+- [SPUG](#spug)
   - [Getting Started](#getting-started)
   - [Project Configuration](#project-configuration)
   - [Usage](#usage)
@@ -13,13 +13,13 @@ Apulu is a project inspired by the project [Apollo](https://github.com/jnrkufuor
 Start with  creating a python virtual environment by following commands
 
 ```bash
-conda create -- name apulu python=3.8.5
+conda create -- name spug python=3.8.5
 ```
 
 Install the dependencies by
 
 ```bash
-conda activate apulu
+conda activate spug
 ./env.sh
 ```
 
