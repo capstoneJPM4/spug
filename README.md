@@ -29,6 +29,4 @@ The project is driven by configuration file: a yaml file specified every paramet
 
 ## Usage
 
-our project is used sequentially with `data pipeline`, `datasets`, `modeling`, ...
-
-to run the entire project once, you may run following the steps in the `notebooks`:
+You may refer the steps in `notebooks` to use the project
